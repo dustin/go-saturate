@@ -105,6 +105,7 @@ func (s *Saturator) fanout(input <-chan WorkInput,
 		for i := 0; i < s.conf.Retries; i++ {
 			if availCases == 0 {
 				cases = s.fillSelector(wi, workchans, w.Dests)
+				availCases = len(cases)
 			}
 
 			selected, _, _ := reflect.Select(cases)
