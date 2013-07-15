@@ -41,7 +41,11 @@ func (w WorkerFunc) Work(i interface{}) error {
 }
 
 // Default configuration for Saturators.
-var DefaultConfig = Config{4, 2, 3}
+var DefaultConfig = Config{
+	DestConcurrency:  2,
+	TotalConcurrency: 4,
+	Retries:          3,
+}
 
 // A Saturator performs a double-fanout of work to keep resource utilization
 // maximized.
