@@ -1,4 +1,4 @@
-package saturator
+package saturate
 
 import (
 	"errors"
