@@ -1,3 +1,4 @@
+// Saturate is a tool for keeping pipelines busy.
 package saturate
 
 import (
