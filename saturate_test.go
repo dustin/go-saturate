@@ -6,7 +6,7 @@ import (
 	"testing"
 )
 
-var aFails = errors.New("I'm a.  I fail")
+var errAFails = errors.New("i'm a.  I fail")
 
 func TestSaturation(t *testing.T) {
 	l := sync.Mutex{}
@@ -24,7 +24,7 @@ func TestSaturation(t *testing.T) {
 
 			// "a" always fails
 			if name == "a" {
-				return aFails
+				return errAFails
 			}
 			// Mark that we did it
 			x := i.(string)
@@ -79,7 +79,7 @@ func TestSaturationFails(t *testing.T) {
 		return WorkerFunc(func(i interface{}) error {
 			// "a" always fails
 			if name == "a" {
-				return aFails
+				return errAFails
 			}
 
 			l.Lock()

@@ -1,4 +1,4 @@
-// Saturate is a tool for keeping pipelines busy.
+// Package saturate is a tool for keeping pipelines busy.
 package saturate
 
 import (
@@ -6,7 +6,7 @@ import (
 	"sync"
 )
 
-// Input to the worker.
+// WorkInput is the input to the worker.
 type WorkInput struct {
 	// The work item the worker should receive.
 	Input interface{}
@@ -19,7 +19,7 @@ type destInput struct {
 	res   chan error
 }
 
-// Configuration for the worker.
+// Config for the worker.
 type Config struct {
 	// Number of concurrent workers per destination.
 	DestConcurrency int
@@ -29,19 +29,20 @@ type Config struct {
 	Retries int
 }
 
-// A worker performs a single item of work.
+// A Worker performs a single item of work.
 type Worker interface {
 	Work(interface{}) error
 }
 
-// Convenience type to make a worker from a function.
+// WorkerFunc is a convenience type to make a worker from a function.
 type WorkerFunc func(interface{}) error
 
+// Work satisfies the Worker interface for a WorkerFunc
 func (w WorkerFunc) Work(i interface{}) error {
 	return w(i)
 }
 
-// Default configuration for Saturators.
+// DefaultConfig for Saturators.
 var DefaultConfig = Config{
 	DestConcurrency:  2,
 	TotalConcurrency: 4,
@@ -57,7 +58,7 @@ type Saturator struct {
 	conf *Config
 }
 
-// Build a new saturator.
+// New builds a new saturator.
 func New(dests []string, w func(dest string) Worker,
 	conf *Config) *Saturator {
 
@@ -137,7 +138,7 @@ func (s *Saturator) fanout(input <-chan WorkInput,
 	}
 }
 
-// Do all the tasks specified by the input.
+// Saturate distributes all the tasks specified by the input.
 //
 // Return error if any input task fails execution on all retries.
 func (s *Saturator) Saturate(input <-chan WorkInput) error {
