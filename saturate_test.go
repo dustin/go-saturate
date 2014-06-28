@@ -20,7 +20,7 @@ func TestSaturation(t *testing.T) {
 			l.Lock()
 			defer l.Unlock()
 			// Mark that we saw it
-			worker[name] = worker[name] + 1
+			worker[name] += 1
 
 			// "a" always fails
 			if name == "a" {
@@ -29,7 +29,7 @@ func TestSaturation(t *testing.T) {
 			// Mark that we did it
 			x := i.(string)
 			task[x] = task[x] + 1
-			successes[name] = successes[name] + 1
+			successes[name] += 1
 
 			return nil
 		})
@@ -37,12 +37,12 @@ func TestSaturation(t *testing.T) {
 
 	ch := make(chan WorkInput)
 	go func() {
+		defer close(ch)
 		for i := 0; i < 100; i++ {
 			for _, n := range names {
 				ch <- WorkInput{n, names}
 			}
 		}
-		close(ch)
 	}()
 
 	err := sat.Saturate(ch)
@@ -84,7 +84,7 @@ func TestSaturationFails(t *testing.T) {
 
 			l.Lock()
 			defer l.Unlock()
-			m[name] = m[name] + 1
+			m[name] += 1
 
 			return nil
 		})
