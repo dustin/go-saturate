@@ -20,7 +20,7 @@ func TestSaturation(t *testing.T) {
 			l.Lock()
 			defer l.Unlock()
 			// Mark that we saw it
-			worker[name] += 1
+			worker[name]++
 
 			// "a" always fails
 			if name == "a" {
@@ -28,8 +28,8 @@ func TestSaturation(t *testing.T) {
 			}
 			// Mark that we did it
 			x := i.(string)
-			task[x] = task[x] + 1
-			successes[name] += 1
+			task[x]++
+			successes[name]++
 
 			return nil
 		})
@@ -84,7 +84,7 @@ func TestSaturationFails(t *testing.T) {
 
 			l.Lock()
 			defer l.Unlock()
-			m[name] += 1
+			m[name]++
 
 			return nil
 		})
